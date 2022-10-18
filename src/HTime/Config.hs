@@ -1,9 +1,11 @@
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module HTime.Config where
 
 import Data.Text (Text)
+import qualified Data.Text as T
+import qualified Data.Text.IO as TIO
+import qualified Data.Bifunctor as B
 import Toml
 
 data Path = Path
@@ -16,9 +18,7 @@ data Path = Path
     autoFillDescription :: !(Maybe Text)
   }
 
-data Config = Config
-  { paths :: ![Path]
-  }
+newtype Config = Config {paths :: [Path]}
 
 pathCodec :: TomlCodec Path
 pathCodec =
@@ -51,3 +51,12 @@ examplePath =
 
 exampleConfig :: Config
 exampleConfig = Config [examplePath, examplePath]
+
+configFromFile :: Text -> IO (Either Text Config)
+configFromFile t = do
+  fileData <- TIO.readFile (T.unpack t)
+  pure $ B.first Toml.prettyTomlDecodeErrors (Toml.decode configCodec fileData)
+
+
+defaultConfig :: Config
+defaultConfig = undefined
