@@ -17,8 +17,10 @@ data Path = Path
     autoFillTags :: !(Maybe [Text]),
     autoFillDescription :: !(Maybe Text)
   }
+  deriving (Show, Eq)
 
 newtype Config = Config {paths :: [Path]}
+  deriving (Show, Eq)
 
 pathCodec :: TomlCodec Path
 pathCodec =

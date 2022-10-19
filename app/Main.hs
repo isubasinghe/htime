@@ -3,6 +3,7 @@ module Main (main) where
 import CLI
 import Options.Applicative hiding (command)
 import TUI
+import qualified HTime.Engine as HE
 
 main :: IO ()
 main = runHTime =<< execParser opts
@@ -16,5 +17,7 @@ main = runHTime =<< execParser opts
         )
 
 runHTime :: CLIOptions -> IO ()
-runHTime c = do
-  print c
+runHTime c = do 
+  let cFile = configFile c 
+  _ <- HE.runWith cFile HE.debugFn
+  pure ()

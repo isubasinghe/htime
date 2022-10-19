@@ -27,10 +27,10 @@ type Tag = String
 
 type Tags = [Tag]
 
-data AddOptions = AddOptions From To Project Tags
+data AddOptions = AddOptions From To (Maybe Project) Tags
   deriving (Show, Eq)
 
-data StartOptions = StartOptions Project Tags
+data StartOptions = StartOptions (Maybe Project) Tags
   deriving (Show, Eq)
 
 data StopOptions = StopOptions
@@ -63,10 +63,12 @@ addOptions =
           <> metavar "TIME"
           <> help "Target for the ending time"
       )
-    <*> strOption
-      ( long "project"
-          <> metavar "PROJECT"
-          <> help "Name of the project to add a new time frame to"
+    <*> optional
+      ( strOption
+          ( long "project"
+              <> metavar "PROJECT"
+              <> help "Name of the project to add a new time frame to"
+          )
       )
     <*> many
       ( strOption
@@ -79,10 +81,12 @@ addOptions =
 startOptions :: Parser StartOptions
 startOptions =
   StartOptions
-    <$> strOption
-      ( long "project"
-          <> metavar "PROJECT"
-          <> help "Name of the project to start"
+    <$> optional
+      ( strOption
+          ( long "project"
+              <> metavar "PROJECT"
+              <> help "Name of the project to start"
+          )
       )
     <*> many
       ( strOption
