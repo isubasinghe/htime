@@ -8,6 +8,7 @@ import Data.Text (Text)
 
 type Tags = S.Set Text
 
+
 data Entry = Entry
   { estart :: Int,
     eend :: Maybe Int,

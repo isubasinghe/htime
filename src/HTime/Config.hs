@@ -2,10 +2,10 @@
 
 module HTime.Config where
 
+import qualified Data.Bifunctor as B
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
-import qualified Data.Bifunctor as B
 import Toml
 
 data Path = Path
@@ -54,11 +54,21 @@ examplePath =
 exampleConfig :: Config
 exampleConfig = Config [examplePath, examplePath]
 
-configFromFile :: Text -> IO (Either Text Config)
-configFromFile t = do
-  fileData <- TIO.readFile (T.unpack t)
-  pure $ B.first Toml.prettyTomlDecodeErrors (Toml.decode configCodec fileData)
-
-
 defaultConfig :: Config
-defaultConfig = undefined
+defaultConfig = Config []
+
+defaultPathFrom :: FilePath -> Path
+defaultPathFrom fpath =
+  Path
+    { path = T.pack fpath,
+      enforceProjectName = Nothing,
+      enforceNTags = Nothing,
+      enforceDescription = Nothing,
+      autoFillProjectName = Nothing,
+      autoFillTags = Nothing,
+      autoFillDescription = Nothing
+    }
+
+searchConfig :: Config -> FilePath -> Maybe Path
+searchConfig (Config []) _ = Nothing
+searchConfig (Config (p : ps)) f = if path p == T.pack f then Just p else searchConfig (Config ps) f
