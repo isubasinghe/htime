@@ -27,7 +27,7 @@ type Tag = String
 
 type Tags = [Tag]
 
-data AddOptions = AddOptions From To (Maybe Project) Tags
+data AddOptions = AddOptions (Maybe From) (Maybe To) (Maybe Project) Tags
   deriving (Show, Eq)
 
 data StartOptions = StartOptions (Maybe Project) Tags
@@ -53,15 +53,19 @@ parseCommand =
 addOptions :: Parser AddOptions
 addOptions =
   AddOptions
-    <$> strOption
-      ( long "from"
-          <> metavar "TIME"
-          <> help "Target for the starting time"
+    <$> optional
+      ( strOption
+          ( long "from"
+              <> metavar "TIME"
+              <> help "Target for the starting time"
+          )
       )
-    <*> strOption
-      ( long "to"
-          <> metavar "TIME"
-          <> help "Target for the ending time"
+    <*> optional
+      ( strOption
+          ( long "to"
+              <> metavar "TIME"
+              <> help "Target for the ending time"
+          )
       )
     <*> optional
       ( strOption

@@ -1,6 +1,9 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Main (main) where
 
 import CLI
+import Control.Monad.Except
 import qualified Data.Bifunctor as B
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
@@ -36,16 +39,26 @@ runHTime c = do
   let cmd' = reconcile cd c' cmd
   pure ()
 
-reconcile :: FilePath -> Config -> Command -> Command
+data ReconcilitionError
+  = RequiresFrom
+  | RequiresTo
+  | RequiresProject
+  | RequiresTags Int Int
+  deriving (Show, Eq)
+
+reconcile :: FilePath -> Config -> Command -> Either ReconcilitionError Command
 reconcile cd c cmd =
   let maybeVal = searchConfig c cd
    in let val = fromMaybe (defaultPathFrom cd) maybeVal
        in case cmd of
-            (Add (AddOptions from to mprojects tags)) -> (Add (AddOptions (cfrom from c) (cto to c) (cproj mprojects c) (ctags tags c)))
-            (Start (StartOptions mprojects tags)) -> undefined
-            (Stop StopOptions) -> undefined
+            (Add (AddOptions from to mprojects tags)) -> do
+              from' <- cfrom from c
+              to' <- cto to c
+              pure $ Add (AddOptions (cfrom from c) (cto to c) (cproj mprojects c) (ctags tags c))
+            (Start (StartOptions mprojects tags)) -> pure $ Start (StartOptions (cproj mprojects c) (ctags tags c))
+            (Stop StopOptions) -> pure $ Stop StopOptions
   where
-    cfrom from c = undefined
+    cfrom from con = undefined
     cto to c = undefined
     cproj mproj c = undefined
     ctags tags c = undefined
