@@ -4,6 +4,7 @@ module Main (main) where
 
 import CLI
 import Options.Applicative hiding (command)
+import TUI (runTUI)
 
 main :: IO ()
 main = runProgram =<< execParser opts
@@ -18,4 +19,4 @@ main = runProgram =<< execParser opts
 
 
 runProgram :: CLIOptions -> IO () 
-runProgram _ = putStrLn "Not Finished"
+runProgram = runTUI
