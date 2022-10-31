@@ -55,6 +55,7 @@ executable htime-exe
   main-is: Main.hs
   other-modules:
       CLI
+      Reconcile
       TUI
       Paths_htime
   hs-source-dirs:
