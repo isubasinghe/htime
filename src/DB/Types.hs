@@ -25,20 +25,13 @@ class MQuery a where
   end :: Maybe Int
   projectFilter :: Maybe (Entry -> Bool)
 
-{- class (Monad b) => DBEngine b where
-  writeInterval :: Entry -> b Bool
-  deleteInterval :: Entry -> b Bool
-  listIntervals :: b [Entry]
-  queryInterval :: Query a => a -> b c -}
+class (Monad m) => DBEngine m where
+  writeInterval :: Entry -> m Bool
 
-data Entities = EEntry Entry | ETags Tags
-
-class (MonadTrans m) => DBEngine m 
+instance DBEngine (SeldaM a) where
+  writeInterval e = pure True
 
 type ABC = SeldaT Char IO Int
 
 asd :: ABC
 asd = pure 23
-
-
-
