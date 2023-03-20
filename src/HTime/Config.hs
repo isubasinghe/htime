@@ -10,7 +10,7 @@ import Toml
 
 data Path = Path
   { path :: !Text,
-    enforceProjectName :: !(Maybe Bool),
+    enforceProjectName :: !Bool,
     enforceNTags :: !(Maybe Int),
     enforceDescription :: !(Maybe Bool),
     autoFillProjectName :: !(Maybe Text),
@@ -26,7 +26,7 @@ pathCodec :: TomlCodec Path
 pathCodec =
   Path
     <$> Toml.text "path" .= path
-    <*> Toml.dioptional (Toml.bool "enforce-project-name") .= enforceProjectName
+    <*> Toml.bool "enforce-project-name" .= enforceProjectName
     <*> Toml.dioptional (Toml.int "enforce-n-tags") .= enforceNTags
     <*> Toml.dioptional (Toml.bool "enforce-description") .= enforceDescription
     <*> Toml.dioptional (Toml.text "autofill-project-name") .= autoFillProjectName
@@ -43,7 +43,7 @@ examplePath :: Path
 examplePath =
   Path
     { path = "~/Projects/lwfree",
-      enforceProjectName = Just True,
+      enforceProjectName = True,
       enforceNTags = Nothing,
       enforceDescription = Nothing,
       autoFillProjectName = Just "pipekit",
@@ -61,7 +61,7 @@ defaultPathFrom :: FilePath -> Path
 defaultPathFrom fpath =
   Path
     { path = T.pack fpath,
-      enforceProjectName = Nothing,
+      enforceProjectName = False,
       enforceNTags = Nothing,
       enforceDescription = Nothing,
       autoFillProjectName = Nothing,

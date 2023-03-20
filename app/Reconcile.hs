@@ -1,6 +1,6 @@
-module Reconcile where 
+module Reconcile where
 
-import Control.Monad.Except
+import CLI
 import qualified Data.Bifunctor as B
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
@@ -9,8 +9,8 @@ import qualified Data.Text.IO as TIO
 import HTime.Config
 import System.Directory (createDirectoryIfMissing, doesFileExist, getCurrentDirectory, getHomeDirectory)
 import System.FilePath ((</>))
+import Control.Applicative ((<|>))
 import qualified Toml
-import CLI
 
 configFromFile :: Text -> IO (Either Text Config)
 configFromFile t = do
@@ -32,22 +32,29 @@ data ReconcilitionError
   | RequiresTags Int Int
   deriving (Show, Eq)
 
-
 reconcile :: FilePath -> Config -> Command -> Either ReconcilitionError Command
 reconcile cd c cmd =
   let maybeVal = searchConfig c cd
    in let val = fromMaybe (defaultPathFrom cd) maybeVal
        in case cmd of
-            (Add (AddOptions from to mprojects tags)) -> do
-              from' <- cfrom from c
-              to' <- cto to c
-              pure $ Add (AddOptions (cfrom from c) (cto to c) (cproj mprojects c) (ctags tags c))
-            (Start (StartOptions mprojects tags)) -> pure $ Start (StartOptions (cproj mprojects c) (ctags tags c))
+            (Add (AddOptions from to mproject tags)) -> do
+              project <- cproj mproject val
+              tags' <- ctags tags val
+              pure $ Add (AddOptions from to project tags')
+            (Start (StartOptions mprojects tags)) -> do
+              project <- cproj mprojects val
+              tags' <- ctags tags val
+              pure $ Start (StartOptions project tags')
             (Stop StopOptions) -> pure $ Stop StopOptions
   where
-    cfrom from con = undefined
-    cto to c = undefined
-    cproj mproj c = undefined
+    cproj :: Maybe Project -> Path -> Either ReconcilitionError (Maybe Project)
+    cproj mproj p = let v = mproj <|> autoFillProjectName p
+                     in case (v, enforceProjectName p)  of 
+                          (Just x, _) -> pure $ Just x 
+                          (_, True) -> Left RequiresProject
+                          _ -> undefined
+                          
+    ctags :: Tags -> Path -> Either ReconcilitionError Tags
     ctags tags c = undefined
 
 getConfig :: CLIOptions -> IO Config

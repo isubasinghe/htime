@@ -1,7 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
 module CLI where
 
 import Options.Applicative hiding (command)
 import qualified Options.Applicative as O
+import Data.Text (Text)
 
 data CLIOptions = CLIOptions {configFile :: Maybe FilePath, command :: Command}
   deriving (Show, Eq)
@@ -21,13 +23,13 @@ type From = String
 
 type To = String
 
-type Project = String
+type Project = Text 
 
 type Tag = String
 
 type Tags = [Tag]
 
-data AddOptions = AddOptions (Maybe From) (Maybe To) (Maybe Project) Tags
+data AddOptions = AddOptions From To (Maybe Project) Tags
   deriving (Show, Eq)
 
 data StartOptions = StartOptions (Maybe Project) Tags
@@ -53,19 +55,15 @@ parseCommand =
 addOptions :: Parser AddOptions
 addOptions =
   AddOptions
-    <$> optional
-      ( strOption
-          ( long "from"
-              <> metavar "TIME"
-              <> help "Target for the starting time"
-          )
+    <$> strOption
+      ( long "from"
+          <> metavar "TIME"
+          <> help "Target for the starting time"
       )
-    <*> optional
-      ( strOption
-          ( long "to"
-              <> metavar "TIME"
-              <> help "Target for the ending time"
-          )
+    <*> strOption
+      ( long "to"
+          <> metavar "TIME"
+          <> help "Target for the ending time"
       )
     <*> optional
       ( strOption
