@@ -52,7 +52,7 @@ reconcile cd c cmd =
                      in case (v, enforceProjectName p)  of 
                           (Just x, _) -> pure $ Just x 
                           (_, True) -> Left RequiresProject
-                          _ -> undefined
+                          _ -> pure Nothing
                           
     ctags :: Tags -> Path -> Either ReconcilitionError Tags
     ctags tags c = undefined
