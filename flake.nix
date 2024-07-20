@@ -9,16 +9,16 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         hPkgs =
-          pkgs.haskell.packages."ghc902"; # need to match Stackage LTS version
+          pkgs.haskell.packages."ghc928"; # need to match Stackage LTS version
                                            # from stack.yaml resolver
 
         myDevTools = [
           hPkgs.ghc # GHC compiler in the desired version (will be available on PATH)
-          hPkgs.haskell-language-server # LSP server for editor
           hPkgs.implicit-hie # auto generate LSP hie.yaml file from cabal
           # hPkgs.cabal-install
           stack-wrapped
           pkgs.zlib # External C library needed by some Haskell packages
+          hPkgs.haskell-language-server
         ];
 
         # Wrap Stack to work with our Nix integration. We don't want to modify
