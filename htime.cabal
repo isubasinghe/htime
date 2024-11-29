@@ -1,0 +1,164 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           htime
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/htime#readme>
+homepage:       https://github.com/githubuser/htime#readme
+bug-reports:    https://github.com/githubuser/htime/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2024 Author name here
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/htime
+
+library
+  exposed-modules:
+      App.Env
+      App.Error
+      App.Monad
+      CLI
+      Lib
+      Time.Aggreg
+      Time.DirMan
+      Time.Entry
+      Time.LockFile
+      Time.Store
+      Time.Time
+  other-modules:
+      Paths_htime
+  autogen-modules:
+      Paths_htime
+  hs-source-dirs:
+      src
+  default-extensions:
+      OverloadedStrings
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DeriveGeneric
+      DerivingStrategies
+      DerivingVia
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      OverloadedLabels
+      RecordWildCards
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , katip
+    , mtl
+    , optparse-applicative
+    , relude
+    , text
+    , time
+  default-language: Haskell2010
+
+executable htime-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_htime
+  autogen-modules:
+      Paths_htime
+  hs-source-dirs:
+      app
+  default-extensions:
+      OverloadedStrings
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DeriveGeneric
+      DerivingStrategies
+      DerivingVia
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      OverloadedLabels
+      RecordWildCards
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , htime
+    , katip
+    , mtl
+    , optparse-applicative
+    , relude
+    , text
+    , time
+  default-language: Haskell2010
+
+test-suite htime-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_htime
+  autogen-modules:
+      Paths_htime
+  hs-source-dirs:
+      test
+  default-extensions:
+      OverloadedStrings
+      BangPatterns
+      ConstraintKinds
+      DataKinds
+      DeriveGeneric
+      DerivingStrategies
+      DerivingVia
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      OverloadedLabels
+      RecordWildCards
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , htime
+    , katip
+    , mtl
+    , optparse-applicative
+    , relude
+    , text
+    , time
+  default-language: Haskell2010
