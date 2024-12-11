@@ -29,6 +29,7 @@ library
       App.Error
       App.Monad
       CLI
+      Effects.Log
       Lib
       Time.Aggreg
       Time.DirMan

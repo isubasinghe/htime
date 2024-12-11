@@ -1,12 +1,13 @@
-module App.Monad where
+module App.Monad (AppEnv, App(..), runApp, runAppAsIO)where
 
-import Control.Monad.Except
+import Control.Monad.Except(MonadError(..))
 import Control.Monad.Reader (ReaderT(..), MonadReader)
 import Control.Monad.IO.Class (MonadIO, liftIO)
-import Control.Exception(throwIO, catch)
+import Control.Exception(throwIO, catch, try)
 import App.Env (Env)
-import App.Error 
+import App.Error (AppError, AppException(..))
 import Relude.Monad.Trans(usingReaderT)
+import Relude.Extra.Bifunctor (firstF)
 
 type AppEnv = Env App
 
@@ -27,3 +28,6 @@ instance MonadError AppError App where
 
 runApp :: AppEnv -> App a -> IO a
 runApp env = usingReaderT env . unApp
+
+runAppAsIO :: AppEnv -> App a -> IO (Either AppError a)
+runAppAsIO env = firstF unAppException . try . runApp env
