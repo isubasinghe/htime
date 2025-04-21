@@ -1,6 +1,16 @@
 module Lib
-    ( someFunc
-    ) where
+  ( main,
+  )
+where
+import Config (Config, loadConfig)
+import App.Monad (AppEnv)
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+
+mkAppEnv :: Config -> IO AppEnv
+mkAppEnv = undefined
+
+runApp :: AppEnv -> IO ()
+runApp = undefined
+
+main :: IO ()
+main = loadConfig >>= mkAppEnv >>= runApp

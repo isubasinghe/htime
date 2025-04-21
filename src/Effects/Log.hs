@@ -6,13 +6,7 @@ import App.Error (AppError)
 import Relude.Monad.Either (whenLeft)
 import Control.Monad.Except (MonadError(throwError))
 
-mainLogAction:: MonadIO m => K.Severity -> K.KatipContextT m ()
-mainLogAction = undefined
 
-simpleLog :: K.KatipContextT IO ()
-simpleLog  = do
-  _ <- K.logFM K.InfoS ""
-  pure ()
 
 runAppLogIO :: AppEnv -> App a -> IO (Either AppError a)
 runAppLogIO env app = do

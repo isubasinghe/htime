@@ -29,6 +29,7 @@ library
       App.Error
       App.Monad
       CLI
+      Config
       Effects.Log
       Lib
       Time.Aggreg
